@@ -1,61 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drum Kit</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<div class="container">
-  <div class="title"></div>
-  <div class="keys">
-    <!-- data-key for JS event key code -->
-    <div data-key="65" class="key">
-      <kbd>A</kbd>
-      <span class="sound">openhat</span>
-    </div>
-    <div data-key="83" class="key">
-      <kbd>S</kbd>
-      <span class="sound">boom</span>
-    </div>
-    <div data-key="68" class="key">
-      <kbd>D</kbd>
-      <span class="sound">drum</span>
-    </div>
-    <div  data-key="70" class="key">
-      <kbd>F</kbd>
-      <span class="sound">tom</span>
-    </div>
-    <div  data-key="71" class="key">
-      <kbd>G</kbd>
-      <span class="sound">ride</span>
-    </div>
-    <div  data-key="72" class="key">
-      <kbd>H</kbd>
-      <span class="sound">hihat</span>
-    </div>
-    <div  data-key="74" class="key">
-      <kbd>J</kbd>
-      <span class="sound">snap</span>
-    </div>
-    <div  data-key="75" class="key">
-      <kbd>K</kbd>
-      <span class="sound">kick</span>
-    </div>
-    <div  data-key="76" class="key">
-      <kbd>L</kbd>
-      <span class="sound">clap</span>
-    </div>
-  </div>
-  <div class="alertText"></div>
-</div>
-  
-  
 
-  <!-- sound source -->
+<body>
+  <div class="container">
+    <div class="title"></div>
+    <div class="keys">
+      <!-- data-key 是 JS 事件的 key code -->
+      <div data-key="65" class="key">
+        <kbd>A</kbd>
+        <span class="sound">openhat</span>
+      </div>
+      <div data-key="83" class="key">
+        <kbd>S</kbd>
+        <span class="sound">boom</span>
+      </div>
+      <div data-key="68" class="key">
+        <kbd>D</kbd>
+        <span class="sound">drum</span>
+      </div>
+      <div data-key="70" class="key">
+        <kbd>F</kbd>
+        <span class="sound">tom</span>
+      </div>
+      <div data-key="71" class="key">
+        <kbd>G</kbd>
+        <span class="sound">ride</span>
+      </div>
+      <div data-key="72" class="key">
+        <kbd>H</kbd>
+        <span class="sound">hihat</span>
+      </div>
+      <div data-key="74" class="key">
+        <kbd>J</kbd>
+        <span class="sound">snap</span>
+      </div>
+      <div data-key="75" class="key">
+        <kbd>K</kbd>
+        <span class="sound">kick</span>
+      </div>
+      <div data-key="76" class="key">
+        <kbd>L</kbd>
+        <span class="sound">clap</span>
+      </div>
+    </div>
+    <div class="alertText"></div>
+  </div>
+
+  <!-- 音效源 -->
   <audio data-key="65" src="./sounds/openhat.mp3"></audio>
   <audio data-key="83" src="./sounds/boom.mp3"></audio>
   <audio data-key="68" src="./sounds/drum.mp3"></audio>
@@ -65,37 +69,46 @@
   <audio data-key="74" src="./sounds/snap.mp3"></audio>
   <audio data-key="75" src="./sounds/kick.mp3"></audio>
   <audio data-key="76" src="./sounds/clap.mp3"></audio>
-  
+
   <script>
     const alertText = document.querySelector('.alertText');
     function playSound(keyCode) {
-      const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+      const originalAudio = document.querySelector(`audio[data-key="${keyCode}"]`);
       const key = document.querySelector(`.key[data-key="${keyCode}"]`);
-      console.log(audio);
-      if(!audio) {  // if key is not exist stop function
+      if (!originalAudio) {  // 當敲擊鍵盤其他按鍵
         alertText.innerHTML = '<p>請敲擊與螢幕英文字母相符的鍵盤按鍵</p>';
         return;
-      }; 
-      alertText.innerHTML = ''
-      audio.currentTime = 0; // rewind to the start
+      };
+      alertText.innerHTML = '';
+
+      // 播放時建立新的 audio 元素播放
+      const audio = originalAudio.cloneNode();
       audio.play();  // play the sound source
-      key.classList.add('playing');  // add class playing to change css style
+
+      // 當播放結束後，清除 audio 元素
+      audio.addEventListener('ended', () => {
+        audio.remove();
+      });
+
+      document.body.appendChild(audio);  // 暫時加入 DOM 中確保正常播放
+      key.classList.add('playing');  // 加入播放 class
     }
 
     function removeTransition(e) {
-      if(e.propertyName !== 'transform') return;
-      this.classList.remove('playing');
+      if (e.propertyName !== 'transform') return;
+      this.classList.remove('playing');  // 移除播放 class
     }
 
-    // transition end event to remove class playing
     const keys = document.querySelectorAll('.key');
     const title = document.querySelector('.title');
 
+    // 新增 transition end 事件監聽，結束時移除播放的 class
     keys.forEach(key => {
       key.addEventListener('transitionend', removeTransition);
     })
 
-    if(window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768) {
+    // matchMedia 判斷裝置是否為觸控，以不同事件監聽播放音效
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768) {
       title.innerHTML = '<h1>點擊按鈕打鼓</h1>';
       keys.forEach(key => {
         key.addEventListener('touchstart', e => {
@@ -110,21 +123,12 @@
       });
     }
 
+    // 監聽 resize 事件，重新執行 matchMedia 判斷
     window.addEventListener('resize', () => {
-      location.reload(); // 重新執行 matchMedia 判斷
+      location.reload();
     });
 
-
-    // let promise = document.querySelector('audio').play();
-
-    // if (promise !== undefined) {
-    //   promise.then(_ => {
-    //     console.log('play');
-    //   }).catch(error => {
-    //     console.log('error');
-    //   });
-    // }
-    
   </script>
 </body>
+
 </html>
