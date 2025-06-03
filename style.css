@@ -21,7 +21,7 @@ time, mark, audio, video {
 	border: 0;
 	font-size: 100%;
 	font: inherit;
-	font-family: "Playpen Sans Hebrew", cursive;
+	font-family: "LXGW WenKai Mono TC", "Noto Sans", sans-serif;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -54,10 +54,7 @@ table {
 }
 
 body {
-	min-height: 100vh;
-	display: flex;
-  justify-content: center; /* 水平置中 */
-  align-items: center;     /* 垂直置中 */
+	
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -67,9 +64,28 @@ body {
 	background-attachment: fixed;
 }
 
+.container{
+	min-height: 100vh;
+	display: flex;
+  justify-content: center; /* 水平置中 */
+  align-items: center;     /* 垂直置中 */
+	flex-direction: column;
+}
+
+.title {
+	color: #FF9224;
+	margin-bottom: 2.5rem;
+	font-size: 2.5rem;
+}
+
+.alertText {
+	color: #fff;
+	margin-top: 2.5rem;
+	font-size: 1.5rem;
+}
+
 /* Keys */
 .keys {
-	border: 1px solid #fff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -93,6 +109,7 @@ body {
 .key kbd {
 	display: block;
 	font-size: 2.5rem;
+	margin-bottom: 0.25rem;
 }
 
 .key span {

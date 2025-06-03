@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drum Kit</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <h1></h1>
+<div class="container">
+  <div class="title"></div>
   <div class="keys">
     <!-- data-key for JS event key code -->
     <div data-key="65" class="key">
@@ -49,24 +50,33 @@
       <span class="sound">clap</span>
     </div>
   </div>
+  <div class="alertText"></div>
+</div>
+  
   
 
   <!-- sound source -->
-  <audio  data-key="65" src="./sounds/openhat.mp3"></audio>
-  <audio  data-key="83" src="./sounds/boom.mp3"></audio>
-  <audio  data-key="68" src="./sounds/drum.mp3"></audio>
-  <audio  data-key="70" src="./sounds/tom.mp3"></audio>
-  <audio  data-key="71" src="./sounds/ride.mp3"></audio>
-  <audio  data-key="72" src="./sounds/hihat.mp3"></audio>
-  <audio  data-key="74" src="./sounds/snap.mp3"></audio>
-  <audio  data-key="75" src="./sounds/kick.mp3"></audio>
-  <audio  data-key="76" src="./sounds/clap.mp3"></audio>
+  <audio data-key="65" src="./sounds/openhat.mp3"></audio>
+  <audio data-key="83" src="./sounds/boom.mp3"></audio>
+  <audio data-key="68" src="./sounds/drum.mp3"></audio>
+  <audio data-key="70" src="./sounds/tom.mp3"></audio>
+  <audio data-key="71" src="./sounds/ride.mp3"></audio>
+  <audio data-key="72" src="./sounds/hihat.mp3"></audio>
+  <audio data-key="74" src="./sounds/snap.mp3"></audio>
+  <audio data-key="75" src="./sounds/kick.mp3"></audio>
+  <audio data-key="76" src="./sounds/clap.mp3"></audio>
   
   <script>
+    const alertText = document.querySelector('.alertText');
     function playSound(keyCode) {
       const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
       const key = document.querySelector(`.key[data-key="${keyCode}"]`);
-      if(!audio) return;  // if key is not exist stop function
+      console.log(audio);
+      if(!audio) {  // if key is not exist stop function
+        alertText.innerHTML = '<p>請敲擊與螢幕英文字母相符的鍵盤按鍵</p>';
+        return;
+      }; 
+      alertText.innerHTML = ''
       audio.currentTime = 0; // rewind to the start
       audio.play();  // play the sound source
       key.classList.add('playing');  // add class playing to change css style
@@ -79,22 +89,31 @@
 
     // transition end event to remove class playing
     const keys = document.querySelectorAll('.key');
+    const title = document.querySelector('.title');
+
     keys.forEach(key => {
       key.addEventListener('transitionend', removeTransition);
     })
 
-    if(window.matchMedia('(pointer: coarse)').matches) {
+    if(window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768) {
+      title.innerHTML = '<h1>點擊按鈕打鼓</h1>';
       keys.forEach(key => {
         key.addEventListener('touchstart', e => {
-          const keyCode = e.target.parentNode.getAttribute('data-key');
+          const keyCode = e.currentTarget.getAttribute('data-key');
           playSound(keyCode);
         });
       })
     } else {
+      title.innerHTML = '<h1>敲擊螢幕顯示的鍵盤按鍵打鼓</h1>';
       window.addEventListener('keydown', e => {
         playSound(e.keyCode)
       });
     }
+
+    window.addEventListener('resize', () => {
+      location.reload(); // 重新執行 matchMedia 判斷
+    });
+
 
     // let promise = document.querySelector('audio').play();
 
