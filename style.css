@@ -49,23 +49,33 @@ table {
 }
 
 /* Global */
+*{
+	box-sizing: border-box;
+}
+
 body {
-  width: 100%;
-  height: 100vh;
+	min-height: 100vh;
+	display: flex;
+  justify-content: center; /* 水平置中 */
+  align-items: center;     /* 垂直置中 */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url('https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
   background-color: rgba(0, 0, 0, 0.6);
   background-blend-mode: darken;
+	background-attachment: fixed;
 }
 
 /* Keys */
 .keys {
-	height: 100vh;
+	border: 1px solid #fff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	margin: 0 0.75rem;
 }
 
 .key {
@@ -74,8 +84,7 @@ body {
 	border-radius: 10px;
 	color: #fff;
 	text-align: center;
-	padding: 12px;
-	margin: 12px;
+	padding: 0.75rem 0;
 	text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 	transition: all 0.7s;
@@ -83,7 +92,7 @@ body {
 
 .key kbd {
 	display: block;
-	font-size: 40px;
+	font-size: 2.5rem;
 }
 
 .key span {
@@ -98,3 +107,27 @@ body {
 	box-shadow: 0 0 8px rgba(255, 45, 45, 0.5);
 }
 
+@media (max-width: 992px) {
+	.keys {
+		gap: 0.75rem;
+	}
+}
+
+@media (pointer: coarse) {
+	.key {
+		padding: 0;
+		font-size: 1.25rem;
+	}
+	.key kbd {
+		display: none;
+	}
+	.key span {
+		display: block;
+		padding: 1.5rem 0;
+	}
+	.key:active {
+		transform: scale(1.1);
+		border: 4px solid #FF9224;
+		box-shadow: 0 0 8px rgba(255, 45, 45, 0.5);
+	}
+}

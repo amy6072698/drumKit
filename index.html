@@ -9,6 +9,7 @@
 </head>
 <body>
 
+  <h1></h1>
   <div class="keys">
     <!-- data-key for JS event key code -->
     <div data-key="65" class="key">
@@ -48,6 +49,7 @@
       <span class="sound">clap</span>
     </div>
   </div>
+  
 
   <!-- sound source -->
   <audio  data-key="65" src="./sounds/openhat.mp3"></audio>
@@ -61,14 +63,14 @@
   <audio  data-key="76" src="./sounds/clap.mp3"></audio>
   
   <script>
-    window.addEventListener('keydown', function(e) {
-      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-      const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    function playSound(keyCode) {
+      const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+      const key = document.querySelector(`.key[data-key="${keyCode}"]`);
       if(!audio) return;  // if key is not exist stop function
       audio.currentTime = 0; // rewind to the start
       audio.play();  // play the sound source
       key.classList.add('playing');  // add class playing to change css style
-    })
+    }
 
     function removeTransition(e) {
       if(e.propertyName !== 'transform') return;
@@ -80,6 +82,30 @@
     keys.forEach(key => {
       key.addEventListener('transitionend', removeTransition);
     })
+
+    if(window.matchMedia('(pointer: coarse)').matches) {
+      keys.forEach(key => {
+        key.addEventListener('touchstart', e => {
+          const keyCode = e.target.parentNode.getAttribute('data-key');
+          playSound(keyCode);
+        });
+      })
+    } else {
+      window.addEventListener('keydown', e => {
+        playSound(e.keyCode)
+      });
+    }
+
+    // let promise = document.querySelector('audio').play();
+
+    // if (promise !== undefined) {
+    //   promise.then(_ => {
+    //     console.log('play');
+    //   }).catch(error => {
+    //     console.log('error');
+    //   });
+    // }
+    
   </script>
 </body>
 </html>
