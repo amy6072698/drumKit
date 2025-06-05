@@ -5,12 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drum Kit</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap"
-    rel="stylesheet">
-  <link
-    href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playpen+Sans+Hebrew:wght@100..800&display=swap"
-    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -70,65 +64,7 @@
   <audio data-key="75" src="./sounds/kick.mp3"></audio>
   <audio data-key="76" src="./sounds/clap.mp3"></audio>
 
-  <script>
-    const alertText = document.querySelector('.alertText');
-    function playSound(keyCode) {
-      const originalAudio = document.querySelector(`audio[data-key="${keyCode}"]`);
-      const key = document.querySelector(`.key[data-key="${keyCode}"]`);
-      if (!originalAudio) {  // 當敲擊鍵盤其他按鍵
-        alertText.innerHTML = '<p>請敲擊與螢幕英文字母相符的鍵盤按鍵</p>';
-        return;
-      };
-      alertText.innerHTML = '';
-
-      // 播放時建立新的 audio 元素播放
-      const audio = originalAudio.cloneNode();
-      audio.play();  // play the sound source
-
-      // 當播放結束後，清除 audio 元素
-      audio.addEventListener('ended', () => {
-        audio.remove();
-      });
-
-      document.body.appendChild(audio);  // 暫時加入 DOM 中確保正常播放
-      key.classList.add('playing');  // 加入播放 class
-    }
-
-    function removeTransition(e) {
-      if (e.propertyName !== 'transform') return;
-      this.classList.remove('playing');  // 移除播放 class
-    }
-
-    const keys = document.querySelectorAll('.key');
-    const title = document.querySelector('.title');
-
-    // 新增 transition end 事件監聽，結束時移除播放的 class
-    keys.forEach(key => {
-      key.addEventListener('transitionend', removeTransition);
-    })
-
-    // matchMedia 判斷裝置是否為觸控，以不同事件監聽播放音效
-    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768) {
-      title.innerHTML = '<h1>點擊按鈕打鼓</h1>';
-      keys.forEach(key => {
-        key.addEventListener('touchstart', e => {
-          const keyCode = e.currentTarget.getAttribute('data-key');
-          playSound(keyCode);
-        });
-      })
-    } else {
-      title.innerHTML = '<h1>敲擊螢幕顯示的鍵盤按鍵打鼓</h1>';
-      window.addEventListener('keydown', e => {
-        playSound(e.keyCode)
-      });
-    }
-
-    // 監聽 resize 事件，重新執行 matchMedia 判斷
-    window.addEventListener('resize', () => {
-      location.reload();
-    });
-
-  </script>
+  <script src="./all.js"></script>
 </body>
 
 </html>
