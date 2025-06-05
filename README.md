@@ -20,7 +20,7 @@
 
 ### 👀 專案展示
 
-![首頁]()
+![首頁](https://github.com/amy6072698/drumKit/blob/main/image/preview.png?raw=true)
 
 ---
 
@@ -30,6 +30,7 @@
 
 ---
 
-### 專案參考
+### 參考來源
 
-[Make a JavaScript Drum Kit in Vanilla JS! #JavaScript30 By Wes Bos](https://www.youtube.com/watch?v=VuN8qwZoego&list=PLu8EoSxDXHP6CGK4YVJhL_VWetA865GOH)
+- [Make a JavaScript Drum Kit in Vanilla JS! #JavaScript30 By Wes Bos](https://www.youtube.com/watch?v=VuN8qwZoego&list=PLu8EoSxDXHP6CGK4YVJhL_VWetA865GOH)
+- [圖片源自 Unsplash](https://unsplash.com/photos/music-room-with-lights-turned-on-gUK3lA3K7Yo)
